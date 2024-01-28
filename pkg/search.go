@@ -3,13 +3,9 @@ package search
 import "container/heap"
 
 // Item represents an item in the priority queue.
-type ItemMaker interface {
-	NewItem(value interface{}, priorityAssigner func() int, index int) Item
-}
-
 type Item struct {
 	value       interface{}
-	GetPriority func() int
+	getPriority func() int
 	index       int
 }
 
@@ -30,7 +26,7 @@ func (pq PriorityQueue) Len() int {
 
 // Less checks if the item at index i has higher priority than the item at index j.
 func (pq PriorityQueue) Less(i, j int) bool {
-	return pq.items[i].GetPriority() < pq.items[j].GetPriority()
+	return pq.items[i].getPriority() < pq.items[j].getPriority()
 }
 
 // Swap swaps the items at indexes i and j.
@@ -43,9 +39,10 @@ func (pq PriorityQueue) Swap(i, j int) {
 // Push adds an item to the priority queue.
 func (pq *PriorityQueue) Push(x interface{}) {
 	n := len(pq.items)
-	item := x.(Item)
-	item.index = n
+	item := Item{value: x, index: n}
+	item.getPriority = pq.assigner.AssignPriority(item)
 	pq.items = append(pq.items, item)
+	heap.Fix(pq, item.index)
 }
 
 // Pop removes and returns the item with the highest priority from the priority queue.
