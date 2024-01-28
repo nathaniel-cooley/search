@@ -49,9 +49,12 @@ func (pq *PriorityQueue) Push(x interface{}) {
 func (pq *PriorityQueue) Pop() interface{} {
 	old := pq.items
 	n := len(old)
-	item := old[n-1]
+	item := old[0]
 	item.index = -1 // for safety
+
+	pq.Swap(0, n-1)
 	pq.items = old[0 : n-1]
+	heap.Fix(pq, 0)
 	return item
 }
 
