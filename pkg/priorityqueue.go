@@ -1,4 +1,4 @@
-package base
+package queue
 
 import "container/heap"
 
@@ -17,6 +17,10 @@ type Assigner interface {
 type PriorityQueue struct {
 	items    []Item
 	assigner Assigner
+}
+
+func NewPriorityQueue(assigner Assigner) *PriorityQueue {
+	return &PriorityQueue{assigner: assigner}
 }
 
 // Len returns the length of the priority queue.
