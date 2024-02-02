@@ -24,6 +24,10 @@ func (pq PriorityQueue) Len() int {
 	return len(pq.items)
 }
 
+func (i Item) GetValue() interface{} {
+	return i.value
+}
+
 // Less checks if the item at index i has higher priority than the item at index j.
 func (pq PriorityQueue) Less(i, j int) bool {
 	return pq.items[i].getPriority() < pq.items[j].getPriority()
@@ -55,7 +59,7 @@ func (pq *PriorityQueue) Pop() interface{} {
 	pq.Swap(0, n-1)
 	pq.items = old[0 : n-1]
 	heap.Fix(pq, 0)
-	return item
+	return item.value
 }
 
 // Update modifies the priority and value of an item in the priority queue.
