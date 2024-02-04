@@ -5,12 +5,12 @@ import "container/heap"
 // Item represents an item in the priority queue.
 type Item struct {
 	value       interface{}
-	getPriority func() int
+	getPriority func() float32
 	index       int
 }
 
 type Assigner interface {
-	AssignPriority(item Item) func() int
+	AssignPriority(item Item) func() float32
 }
 
 // PriorityQueue implements a priority queue.

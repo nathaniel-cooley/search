@@ -5,17 +5,17 @@ import (
 )
 
 type TestAssigner struct {
-	weight int
+	weight float32
 }
 
-func (ta TestAssigner) AssignPriority(item Item) func() int {
-	return func() int {
-		return ta.weight * item.value.(int)
+func (ta TestAssigner) AssignPriority(item Item) func() float32 {
+	return func() float32 {
+		return ta.weight * float32(item.value.(int))
 	}
 }
 
 func TestPriorityQueue_Len(t *testing.T) {
-	pq := PriorityQueue{assigner: TestAssigner{weight: 1}}
+	pq := PriorityQueue{assigner: TestAssigner{weight: 1.0}}
 
 	pq.Push(1)
 	pq.Push(2)
@@ -27,7 +27,7 @@ func TestPriorityQueue_Len(t *testing.T) {
 }
 
 func TestPriorityQueue_Less(t *testing.T) {
-	pq := PriorityQueue{assigner: TestAssigner{weight: -1}}
+	pq := PriorityQueue{assigner: TestAssigner{weight: -1.0}}
 	expectedValue := 1
 	pq.Push(2)
 	pq.Push(expectedValue)
@@ -39,7 +39,7 @@ func TestPriorityQueue_Less(t *testing.T) {
 }
 
 func TestPriorityQueue_Swap(t *testing.T) {
-	pq := PriorityQueue{assigner: TestAssigner{weight: 1}}
+	pq := PriorityQueue{assigner: TestAssigner{weight: 1.0}}
 	pq.Push(1)
 	pq.Push(2)
 	// before the values are swapped, the first item should be 1 and the second item should be 2
@@ -55,7 +55,7 @@ func TestPriorityQueue_Swap(t *testing.T) {
 }
 
 func TestPriorityQueue_Push(t *testing.T) {
-	pq := PriorityQueue{assigner: TestAssigner{weight: 1}}
+	pq := PriorityQueue{assigner: TestAssigner{weight: 1.0}}
 	pq.Push(3)
 	pq.Push(2)
 	pq.Push(1)
@@ -72,22 +72,22 @@ func TestPriorityQueue_Push(t *testing.T) {
 }
 
 func TestPriorityQueue_Pop(t *testing.T) {
-	pq := PriorityQueue{assigner: TestAssigner{weight: 1}}
+	pq := PriorityQueue{assigner: TestAssigner{weight: 1.0}}
 	pq.Push(3)
 	pq.Push(4)
 	pq.Push(2)
 	pq.Push(1)
 
 	for i := 0; i < 3; i++ {
-		item := pq.Pop()
-		if item.(Item).value.(int) != i+1 {
-			t.Errorf("PriorityQueue.Pop() = %v, want %v", item.(Item).value.(int), i+1)
+		val := pq.Pop()
+		if val.(int) != i+1 {
+			t.Errorf("PriorityQueue.Pop() = %v, want %v", val, i+1)
 		}
 	}
 }
 
 func TestPriorityQueue_Update(t *testing.T) {
-	pq := PriorityQueue{assigner: TestAssigner{weight: 1}}
+	pq := PriorityQueue{assigner: TestAssigner{weight: 1.0}}
 	pq.Push(3)
 	pq.Push(4)
 	pq.Push(2)
