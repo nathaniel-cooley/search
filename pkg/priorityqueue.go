@@ -1,4 +1,4 @@
-package queue
+package collections
 
 import "container/heap"
 
@@ -7,10 +7,6 @@ type Item struct {
 	value       interface{}
 	getPriority func() float32
 	index       int
-}
-
-type Assigner interface {
-	AssignPriority(item Item) func() float32
 }
 
 // PriorityQueue implements a priority queue.
